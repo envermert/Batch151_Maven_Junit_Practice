@@ -12,8 +12,16 @@ import javax.swing.*;
 
 public class C03_Iframe extends TestBase {
 
+    // https://html.com/tags/iframe sayfasına gidiniz
+    // Videoyu görecek kadar asagiya ininiz
+    // Videoyu izlemek icin Play tusuna basiniz
+    // Videoyu calistirdiginizi test ediniz
+    // 'Powerful,but easy to misuse' yazısının gorunur oldugunu test ediniz
+
+
     @Test
-    public void test01() {
+    public void name() {
+
         // https://html.com/tags/iframe sayfasına gidiniz
         driver.get("https://html.com/tags/iframe");
 
@@ -21,16 +29,12 @@ public class C03_Iframe extends TestBase {
         Actions actions = new Actions(driver);
         actions.sendKeys(Keys.PAGE_DOWN).sendKeys(Keys.PAGE_DOWN).perform();
 
+
         // Videoyu izlemek icin Play tusuna basiniz
-       // driver.switchTo().frame(0);
-        WebElement dd = driver.findElement(By.xpath("//iframe[@src='https://www.youtube.com/embed/owsfdh4gxyc']"));
+        WebElement iframe = driver.findElement(By.xpath("//iframe[@src='https://www.youtube.com/embed/owsfdh4gxyc']"));
+        driver.switchTo().frame(iframe);
 
-        driver.switchTo().frame(dd);
-
-        WebElement play = driver.findElement(By.xpath("//button[@class='ytp-large-play-button ytp-button ytp-large-play-button-red-bg']"));
-        play.click();
-
-            /*
+        /*
         Play'i dogru locate edip click yamamıza ragmen videoyu calıstırmadı
         bunun üzerine HTML kodlarını inceleyince
         play'in aslında iframe icerisinde oldugunu gördük
@@ -38,13 +42,25 @@ public class C03_Iframe extends TestBase {
         switchTo() ile iframe gecmeliyiz
          */
 
+        WebElement play = driver.findElement(By.xpath("//button[@class='ytp-large-play-button ytp-button ytp-large-play-button-red-bg']"));
+        play.click();
+
         // Videoyu calistirdiginizi test ediniz
-        Assert.assertTrue(driver.findElement(By.xpath("//a[@class='ytp-youtube-button ytp-button yt-uix-sessionlink']")).isDisplayed());
+
+        WebElement youTubeYazisi = driver.findElement(By.xpath("//a[@class='ytp-youtube-button ytp-button yt-uix-sessionlink']"));
+
+        Assert.assertTrue(youTubeYazisi.isDisplayed());
+
 
         // 'Powerful,but easy to misuse' yazısının gorunur oldugunu test ediniz
-        driver.switchTo().parentFrame();
-        Assert.assertTrue(driver.findElement(By.xpath("//span[@id='Powerful_but_easy_to_misuse']")).isDisplayed());
 
+        driver.switchTo().parentFrame();
+
+        WebElement powerYazisi = driver.findElement(By.xpath("//span[@id='Powerful_but_easy_to_misuse']"));
+
+        Assert.assertTrue(powerYazisi.isDisplayed());
 
     }
+
 }
+
